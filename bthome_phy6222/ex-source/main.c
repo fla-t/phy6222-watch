@@ -3,7 +3,7 @@
 */
 
 #include "bus_dev.h"
-//#include "config.h"
+#include "config.h"
 #include "gpio.h"
 #include "clock.h"
 #include "global_config.h"
@@ -15,12 +15,11 @@
 #include "log.h"
 #include "rf_phy_driver.h"
 #include "flash.h"
-//#include "flash_eep.h"
+#include "flash_eep.h"
 #include "version.h"
 #include "watchdog.h"
 #include "adc.h"
-//#include "ble_ota.h"
-#include "mcu_phy_bumbee.h"
+#include "ble_ota.h"
 
 #define DEFAULT_UART_BAUD	115200
 
@@ -123,21 +122,25 @@ const ioinit_cfg_t ioInit[] = {
 		{ GPIO_P09, GPIO_PULL_UP }, // TX
 		{ GPIO_P10, GPIO_PULL_UP }, // RX - GPIO_INP
 		{ GPIO_P11, GPIO_FLOATING }, // ADC_VBAT
-		{ GPIO_P14, GPIO_FLOATING },
-		{ GPIO_P15, GPIO_FLOATING },
-		{ GPIO_P16, GPIO_FLOATING },
-		{ GPIO_P17, GPIO_FLOATING },
+		{ GPIO_P14, GPIO_PULL_DOWN },
+		{ GPIO_P15, GPIO_PULL_DOWN },
+		{ GPIO_P16, GPIO_PULL_DOWN },
+		{ GPIO_P17, GPIO_PULL_DOWN },
 		{ GPIO_P18, GPIO_FLOATING }, // I2C_SDA
 		{ GPIO_P20, GPIO_FLOATING }, // I2C_SCL
-		{ GPIO_P23, GPIO_FLOATING },
-		{ GPIO_P24, GPIO_FLOATING },
-		{ GPIO_P25, GPIO_FLOATING },
+		{ GPIO_P23, GPIO_PULL_DOWN },
+		{ GPIO_P24, GPIO_PULL_DOWN },
+		{ GPIO_P25, GPIO_PULL_DOWN },
+#ifdef GPIO_LED
 		{ GPIO_P26, GPIO_FLOATING }, // LED - GPIO_LED
+#else
+		{ GPIO_P26, GPIO_FLOATING }, // LED - GPIO_LED
+#endif
 //		{GPIO_P27, GPIO_FLOATING },
-		{ GPIO_P31, GPIO_FLOATING },
-		{ GPIO_P32, GPIO_FLOATING },
-		{ GPIO_P33, GPIO_FLOATING },
-		{ GPIO_P34, GPIO_FLOATING }
+		{ GPIO_P31, GPIO_PULL_DOWN },
+		{ GPIO_P32, GPIO_PULL_DOWN },
+		{ GPIO_P33, GPIO_PULL_DOWN },
+		{ GPIO_P34, GPIO_PULL_DOWN }
 #elif (DEVICE == DEVICE_BTH01)
  		{ GPIO_P00, GPIO_PULL_UP_S },	// GPIO_SPWR Sensor Vdd
 		{ GPIO_P01, GPIO_PULL_DOWN },
@@ -295,7 +298,6 @@ const ioinit_cfg_t ioInit[] = {
 #else
 #error "DEVICE Not released!"
 #endif
-
 #else
 		{GPIO_P02, GPIO_FLOATING },
 		{GPIO_P03, GPIO_FLOATING },
@@ -436,9 +438,8 @@ int main(void) {
 	extern const uint32_t *const jump_table_base[];
 	memcpy((void*) 0x1fff0000, (void*) jump_table_base, 1024);
 #endif
-	//wrk.boot_flg = (uint8_t)read_reg(OTA_MODE_SELECT_REG);
-#if defined(OTA_TYPE) && (OTA_TYPE != 0)
-#error asdfasd
+	wrk.boot_flg = (uint8_t)read_reg(OTA_MODE_SELECT_REG);
+#if defined(OTA_TYPE) && OTA_TYPE == OTA_TYPE_BOOT
 #if (DEV_SERVICES & SERVICE_KEY)
 	hal_gpio_pin_init(GPIO_KEY, GPIO_INPUT);
 	if (hal_gpio_read(GPIO_KEY) == 0
@@ -484,12 +485,12 @@ int main(void) {
 	hal_rfphy_init();
 	hal_init();
 
-	//restore_utc_time_sec();
+	restore_utc_time_sec();
 #if 0 //def STACK_MAX_SRAM
         extern uint32 g_stack;
     __set_MSP((uint32_t)(&g_stack));
 #endif
-	//load_eep_config();
+	load_eep_config();
 
 	LOG("SDK Version ID %08x \n",SDK_VER_RELEASE_ID);
 	LOG("rfClk %d rcClk %d sysClk %d tpCap[%02x %02x]\n",g_rfPhyClkSel,g_clk32K_config,g_system_clk,g_rfPhyTpCal0,g_rfPhyTpCal1);

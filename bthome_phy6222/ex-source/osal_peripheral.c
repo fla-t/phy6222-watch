@@ -37,10 +37,10 @@
 #include "gattservapp.h"
 
 /* Profiles */
-//#include "thb2_peripheral.h"
+#include "thb2_peripheral.h"
 
 /* Application */
-//#include "thb2_main.h"
+#include "thb2_main.h"
 #include "halperipheral.h"
 
 /*********************************************************************
@@ -77,12 +77,12 @@ const pTaskEventHandlerFn tasksArr[] =
 	SM_ProcessEvent,												// task 3
 	GAP_ProcessEvent,												// task 4
 	GATT_ProcessEvent,												// task 5
-	//GAPRole_ProcessEvent,											// task 6
+	GAPRole_ProcessEvent,											// task 6
 #if (DEF_GAPBOND_MGR_ENABLE==1)
 	GAPBondMgr_ProcessEvent,										// task , add 2017-11-15
 #endif
 	GATTServApp_ProcessEvent,										// task 7
-	//BLEPeripheral_ProcessEvent,										// task 8
+	BLEPeripheral_ProcessEvent,										// task 8
 
 };
 
@@ -124,13 +124,13 @@ void osalInitTasks( void )
 	/* GATT Task */
 	GATT_Init( taskID++ );
 	/* Profiles */
-	//GAPRole_Init( taskID++ );
+	GAPRole_Init( taskID++ );
 #if(DEF_GAPBOND_MGR_ENABLE==1)
 	GAPBondMgr_Init( taskID++ );		  // 2017-11-15
 #endif
 	GATTServApp_Init( taskID++ );
 	/* Application */
-	//SimpleBLEPeripheral_Init( taskID++ );
+	SimpleBLEPeripheral_Init( taskID++ );
 }
 //#endif // (APP_CFG == 0)
 

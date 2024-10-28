@@ -1,0 +1,62 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/bthome_phy6222/**",
+                "${workspaceFolder}/bthome_phy6222/source",
+                "${workspaceFolder}/bthome_phy6222/SDK/misc/CMSIS/device/phyplus/**",
+                "${workspaceFolder}/bthome_phy6222/SDK/misc",
+                "${workspaceFolder}/bthome_phy6222/SDK/misc/CMSIS/include",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/arch/cm0",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/ble/controller",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/ble/include",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/ble/hci",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/ble/host",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/inc",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/osal/include",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/profiles/ota_app",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/profiles/DevInfo",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/profiles/SimpleProfile",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/profiles/Roles",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/adc",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/bsp_button",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/clock",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/dma",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/flash",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/gpio",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/i2c",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/key",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/kscan",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/led_light",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/log",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/pwm",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/pwrmgr",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/qdec",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/spi",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/spiflash",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/timer",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/uart",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/voice",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/watchdog",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/libraries/crc16",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/libraries/cliface",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/libraries/fs",
+                "${workspaceFolder}/bthome_phy6222/SDK/components/driver/watchdog"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__GCC"
+            ],
+            "windowsSdkVersion": "10.0.20348.0",
+            "compilerPath": "c:\\Program Files (x86)\\GNU Tools ARM Embedded\\8 2018-q4-major\\bin\\arm-none-eabi-gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

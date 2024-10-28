@@ -6,10 +6,10 @@
 #include "config.h"
 #include "adc.h"
 #include "battery.h"
-//#include "thb2_main.h"
+#include "thb2_main.h"
 #include "pwrmgr.h"
 #include "jump_function.h"
-//#include "sensors.h"
+#include "sensors.h"
 /*
 #ifndef ADC_PIN
 #define ADC_PIN GPIO_P11
@@ -18,15 +18,6 @@
 #define ADC_VBAT_CHL ADC_CH1N_P11
 #endif
 */
-typedef struct _measured_data_t {
-	uint16_t	count;
-//	int16_t		temp; // x 0.01 C
-//	int16_t		humi; // x 0.01 %
-	uint16_t	battery_mv; // mV
-	uint8_t		battery; // 0..100 %
-} measured_data_t;
-
-measured_data_t measured_data;
 #define MIN_ADC_CH 2
 
 //--- check battery
@@ -89,9 +80,9 @@ void __attribute__((used)) hal_ADC_IRQHandler(void) {
 #endif
 	hal_pwrmgr_unlock(MOD_ADCC);
 
-//	extern uint8 gapRole_AdvEnabled;
-	//if (!gapRole_AdvEnabled)
-		//osal_set_event(simpleBLEPeripheral_TaskID, BATT_VALUE_EVT);
+	extern uint8 gapRole_AdvEnabled;
+	if (!gapRole_AdvEnabled)
+		osal_set_event(simpleBLEPeripheral_TaskID, BATT_VALUE_EVT);
 }
 
 void hal_adc_init(void) {

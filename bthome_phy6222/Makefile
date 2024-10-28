@@ -1,35 +1,16 @@
 ##############################################################################
-PROJECT_NAME ?= bthome_phy6222
+PROJECT_NAME ?= phy6222_watch
 #POJECT_DEF ?= -DDEVICE=DEVICE_THB2
 ##############################################################################
-COM_PORT = COM11
+COM_PORT = COM230
 ##############################################################################
 # Source
 SRC_PATH = ./source
 SRC_PRJ = main.c
-SRC_PRJ += battery.c
-SRC_PRJ += battservice.c
-SRC_PRJ += ccm.c
-SRC_PRJ += bthome_beacon.c
 SRC_PRJ += osal_peripheral.c
+SRC_PRJ += battery.c
 SRC_PRJ += peripheral_main.c
-SRC_PRJ += sbp_profile.c
-SRC_PRJ += devinfoservice.c
-SRC_PRJ += trigger.c
-SRC_PRJ += sensors.c
-SRC_PRJ += dev_i2c.c
-SRC_PRJ += config.c
-SRC_PRJ += cmd_parser.c
-SRC_PRJ += thb2_main.c
-SRC_PRJ += thb2_peripheral.c
-SRC_PRJ += thservice.c
-SRC_PRJ += flash_eep.c
-SRC_PRJ += lcd_th05.c
-SRC_PRJ += lcd_th05d.c
-SRC_PRJ += lcd_th05f.c
-SRC_PRJ += lcd_thb1.c
-SRC_PRJ += ble_ota.c
-SRC_PRJ += logger.c
+
 
 INCLUDES = -I$(SRC_PATH)
 
