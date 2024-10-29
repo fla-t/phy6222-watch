@@ -3,7 +3,7 @@
 */
 
 #include "bus_dev.h"
-//#include "config.h"
+#include "config.h"
 #include "gpio.h"
 #include "clock.h"
 #include "global_config.h"
@@ -110,192 +110,29 @@ static void hal_low_power_io_init(void) {
 //========= disable all gpio pullup/down to preserve juice
 const ioinit_cfg_t ioInit[] = {
 #if(SDK_VER_CHIP == __DEF_CHIP_QFN32__)
-#if DEVICE == DEVICE_THB2
-		{ GPIO_P00, GPIO_PULL_DOWN },
-		{ GPIO_P01, GPIO_PULL_DOWN },
-#ifdef GPIO_TRG
-		{ GPIO_P02, GPIO_FLOATING }, // TX2 - GPIO_TRG
-#else
-		{ GPIO_P02, GPIO_PULL_UP }, // TX2
-#endif
-		{ GPIO_P03, GPIO_PULL_DOWN },
-		{ GPIO_P07, GPIO_PULL_UP }, // KEY
-		{ GPIO_P09, GPIO_PULL_UP }, // TX
-		{ GPIO_P10, GPIO_PULL_UP }, // RX - GPIO_INP
-		{ GPIO_P11, GPIO_FLOATING }, // ADC_VBAT
-		{ GPIO_P14, GPIO_FLOATING },
-		{ GPIO_P15, GPIO_FLOATING },
-		{ GPIO_P16, GPIO_FLOATING },
-		{ GPIO_P17, GPIO_FLOATING },
-		{ GPIO_P18, GPIO_FLOATING }, // I2C_SDA
-		{ GPIO_P20, GPIO_FLOATING }, // I2C_SCL
+		{ GPIO_P00, GPIO_FLOATING }, // LED
+		{ GPIO_P01, GPIO_FLOATING },
+		{ GPIO_P02, GPIO_FLOATING }, // GPIO_LPWR
+		{ GPIO_P03, GPIO_FLOATING },
+		{ GPIO_P07, GPIO_PULL_DOWN },
+		{ GPIO_P09, GPIO_PULL_UP }, // TX1
+		{ GPIO_P10, GPIO_PULL_UP }, // RX1
+		{ GPIO_P11, GPIO_PULL_UP }, // ADC Vbat
+		{ GPIO_P14, GPIO_FLOATING }, // KEY - GPIO_KEY
+		{ GPIO_P15, GPIO_PULL_DOWN },
+		{ GPIO_P16, GPIO_PULL_DOWN },
+		{ GPIO_P17, GPIO_PULL_DOWN },
+		{ GPIO_P18, GPIO_FLOATING }, // RX2  - GPIO_INP
+		{ GPIO_P20, GPIO_FLOATING }, // TX2 - GPIO_TRG
 		{ GPIO_P23, GPIO_FLOATING },
 		{ GPIO_P24, GPIO_FLOATING },
-		{ GPIO_P25, GPIO_FLOATING },
-		{ GPIO_P26, GPIO_FLOATING }, // LED - GPIO_LED
+		{ GPIO_P25, GPIO_FLOATING }, // P25
+		{ GPIO_P26, GPIO_FLOATING },
 //		{GPIO_P27, GPIO_FLOATING },
 		{ GPIO_P31, GPIO_FLOATING },
 		{ GPIO_P32, GPIO_FLOATING },
-		{ GPIO_P33, GPIO_FLOATING },
-		{ GPIO_P34, GPIO_FLOATING }
-#elif (DEVICE == DEVICE_BTH01)
- 		{ GPIO_P00, GPIO_PULL_UP_S },	// GPIO_SPWR Sensor Vdd
-		{ GPIO_P01, GPIO_PULL_DOWN },
-		{ GPIO_P02, GPIO_PULL_DOWN },
-		{ GPIO_P03, GPIO_PULL_DOWN },
-		{ GPIO_P07, GPIO_PULL_DOWN },
-		{ GPIO_P09, GPIO_PULL_UP }, // TX1
-		{ GPIO_P10, GPIO_PULL_UP }, // RX1
-		{ GPIO_P11, GPIO_PULL_UP }, // ADC Vbat
-		{ GPIO_P14, GPIO_PULL_UP }, // KEY
-#ifdef GPIO_LED
-		{ GPIO_P15, GPIO_FLOATING }, // LED - GPIO_LED
-#else
-		{ GPIO_P15, GPIO_PULL_DOWN },
-#endif
-		{ GPIO_P16, GPIO_PULL_DOWN },
-		{ GPIO_P17, GPIO_PULL_DOWN },
-		{ GPIO_P18, GPIO_PULL_UP }, // RX2 - GPIO_INP
-#ifdef GPIO_TRG
-		{ GPIO_P20, GPIO_FLOATING }, // TX2 - GPIO_TRG
-#else
-		{ GPIO_P20, GPIO_PULL_UP }, // TX2 - GPIO_TRG
-#endif
-		{ GPIO_P23, GPIO_PULL_DOWN },
-		{ GPIO_P24, GPIO_PULL_DOWN },
-		{ GPIO_P25, GPIO_PULL_DOWN }, // P25
-		{ GPIO_P26, GPIO_PULL_DOWN },
-//		{GPIO_P27, GPIO_FLOATING },
-		{ GPIO_P31, GPIO_PULL_DOWN },
-		{ GPIO_P32, GPIO_PULL_DOWN },
-		{ GPIO_P33, GPIO_FLOATING }, // I2C_SDA
-		{ GPIO_P34, GPIO_FLOATING } // // I2C_SCL
-#elif (DEVICE == DEVICE_TH05)
-		{ GPIO_P00, GPIO_PULL_UP_S }, // GPIO_SPWR Sensor Vdd
-		{ GPIO_P01, GPIO_PULL_DOWN },
-		{ GPIO_P02, GPIO_PULL_UP }, // GPIO_LPWR
-		{ GPIO_P03, GPIO_PULL_DOWN },
-		{ GPIO_P07, GPIO_PULL_DOWN },
-		{ GPIO_P09, GPIO_PULL_UP }, // TX1
-		{ GPIO_P10, GPIO_PULL_UP }, // RX1
-		{ GPIO_P11, GPIO_PULL_UP }, // ADC Vbat
-		{ GPIO_P14, GPIO_PULL_UP }, // KEY - GPIO_KEY
-		{ GPIO_P15, GPIO_PULL_DOWN },
-		{ GPIO_P16, GPIO_PULL_DOWN },
-		{ GPIO_P17, GPIO_PULL_DOWN },
-		{ GPIO_P18, GPIO_PULL_UP }, // RX2  - GPIO_INP
-#ifdef GPIO_TRG
-		{ GPIO_P20, GPIO_FLOATING }, // TX2 - GPIO_TRG
-#else
-		{ GPIO_P20, GPIO_PULL_UP }, // TX2 - GPIO_TRG
-#endif
-
-		{ GPIO_P23, GPIO_PULL_DOWN },
-		{ GPIO_P24, GPIO_PULL_DOWN },
-		{ GPIO_P25, GPIO_PULL_DOWN }, // P25
-		{ GPIO_P26, GPIO_PULL_DOWN },
-//		{GPIO_P27, GPIO_FLOATING },
-		{ GPIO_P31, GPIO_PULL_DOWN },
-		{ GPIO_P32, GPIO_PULL_DOWN },
 		{ GPIO_P33, GPIO_FLOATING }, // I2C_SDA
 		{ GPIO_P34, GPIO_FLOATING }  // I2C_SCL
-
-#elif (DEVICE == DEVICE_THB1) || (DEVICE == DEVICE_THB3)
-		{ GPIO_P00, GPIO_PULL_DOWN },
-		{ GPIO_P01, GPIO_PULL_UP }, // KEY - GPIO_KEY
-		{ GPIO_P02, GPIO_PULL_DOWN },
-		{ GPIO_P03, GPIO_PULL_DOWN },
-		{ GPIO_P07, GPIO_PULL_DOWN },
-#ifdef GPIO_TRG
-		{ GPIO_P09, GPIO_FLOATING }, // TX - GPIO_TRG
-#else
-		{ GPIO_P09, GPIO_PULL_UP }, // TX
-#endif
-		{ GPIO_P10, GPIO_PULL_UP }, // RX - GPIO_INP
-		{ GPIO_P11, GPIO_FLOATING }, // ADC Vbat с делителем! Не используется - Выкусить резистор R3!
-		{ GPIO_P14, GPIO_PULL_UP }, // назначен как ADC_PIN, т.к. вывод P11 подключен к делителю
-		{ GPIO_P15, GPIO_PULL_DOWN },
-		{ GPIO_P16, GPIO_PULL_DOWN },
-		{ GPIO_P17, GPIO_PULL_DOWN },
-		{ GPIO_P18, GPIO_FLOATING }, // I2C_SDA CHT8310
-		{ GPIO_P20, GPIO_FLOATING }, // I2C_SCL CHT8310
-		{ GPIO_P23, GPIO_PULL_DOWN },
-		{ GPIO_P24, GPIO_PULL_DOWN },
-		{ GPIO_P25, GPIO_PULL_DOWN },
-		{ GPIO_P26, GPIO_PULL_DOWN },
-//		{ GPIO_P27, GPIO_PULL_DOWN },
-		{ GPIO_P31, GPIO_PULL_DOWN },
-		{ GPIO_P32, GPIO_PULL_DOWN },
-		{ GPIO_P33, GPIO_PULL_UP }, // I2C_SDA CNV1972
-		{ GPIO_P34, GPIO_PULL_UP }  // I2C_SCL CNV1972
-#elif (DEVICE == DEVICE_TH05D)
-#ifdef GPIO_LED
-		{ GPIO_P00, GPIO_FLOATING }, // LED
-#else
-		{ GPIO_P00, GPIO_PULL_DOWN }, // LED - не припаян R1 Q10 ...
-#endif
-		{ GPIO_P01, GPIO_PULL_DOWN },
-		{ GPIO_P02, GPIO_PULL_UP }, // KEY - GPIO_KEY
-		{ GPIO_P03, GPIO_PULL_DOWN },
-		{ GPIO_P07, GPIO_PULL_UP }, // CHT8305 Alert
-#ifdef GPIO_TRG
-		{ GPIO_P09, GPIO_FLOATING }, // TX - GPIO_TRG
-#else
-		{ GPIO_P09, GPIO_PULL_UP }, // TX
-#endif
-		{ GPIO_P10, GPIO_PULL_UP }, // RX - GPIO_INP
-		{ GPIO_P11, GPIO_FLOATING }, // BL55072 SDA
-		{ GPIO_P14, GPIO_FLOATING }, // BL55072 SCL
-		{ GPIO_P15, GPIO_PULL_UP }, // назначен как ADC_PIN, т.к. вывод P20 подключен к делителю
-		{ GPIO_P16, GPIO_PULL_DOWN },
-		{ GPIO_P17, GPIO_PULL_DOWN },
-		{ GPIO_P18, GPIO_FLOATING }, // I2C_SDA CHT8310
-		{ GPIO_P20, GPIO_FLOATING }, // ADC Vbat с делителем! Не используется - Выкусить резистор R18!
-		{ GPIO_P23, GPIO_PULL_DOWN },
-		{ GPIO_P24, GPIO_PULL_DOWN },
-		{ GPIO_P25, GPIO_PULL_DOWN },
-		{ GPIO_P26, GPIO_PULL_DOWN },
-//		{ GPIO_P27, GPIO_PULL_DOWN },
-		{ GPIO_P31, GPIO_FLOATING }, // CHT8305 SDA
-		{ GPIO_P32, GPIO_FLOATING }, // CHT8305 SCL
-		{ GPIO_P33, GPIO_PULL_DOWN },
-		{ GPIO_P34, GPIO_PULL_DOWN }
-#elif (DEVICE == DEVICE_TH05F)
-		{ GPIO_P00, GPIO_PULL_UP_S }, // GPIO_SPWR Sensor Vdd
-		{ GPIO_P01, GPIO_PULL_DOWN },
-		{ GPIO_P02, GPIO_FLOATING }, // GPIO_LPWR питание LCD драйвера
-		{ GPIO_P03, GPIO_PULL_DOWN },
-		{ GPIO_P07, GPIO_PULL_DOWN },
-		{ GPIO_P09, GPIO_PULL_UP }, // TX
-		{ GPIO_P10, GPIO_PULL_UP }, // RX - GPIO_INP
-		{ GPIO_P11, GPIO_PULL_UP }, // назначен как ADC_PIN
-		{ GPIO_P14, GPIO_PULL_UP }, // KEY - GPIO_KEY
-#ifdef GPIO_LED
-		{ GPIO_P15, GPIO_FLOATING }, // LED (R7/D1/GND)
-#else
-		{ GPIO_P15, GPIO_PULL_UP }, // LED (R7/D1/GND)
-#endif
-		{ GPIO_P16, GPIO_PULL_DOWN },
-		{ GPIO_P17, GPIO_PULL_DOWN },
-		{ GPIO_P18, GPIO_PULL_UP }, // RX2
-#ifdef GPIO_TRG
-		{ GPIO_P20, GPIO_FLOATING }, // TX2 - GPIO_TRG
-#else
-		{ GPIO_P20, GPIO_PULL_UP }, // TX2 - GPIO_TRG
-#endif
-		{ GPIO_P23, GPIO_PULL_DOWN },
-		{ GPIO_P24, GPIO_PULL_DOWN },
-		{ GPIO_P25, GPIO_PULL_DOWN }, // mark "P25"
-		{ GPIO_P26, GPIO_FLOATING }, // LCD I2C SDA
-//		{ GPIO_P27, GPIO_PULL_DOWN },
-		{ GPIO_P31, GPIO_FLOATING }, // LCD I2C SCL
-		{ GPIO_P32, GPIO_PULL_DOWN },
-		{ GPIO_P33, GPIO_FLOATING }, // CHT8305 SDA
-		{ GPIO_P34, GPIO_FLOATING } // CHT8305 SCL
-#else
-#error "DEVICE Not released!"
-#endif
-
 #else
 		{GPIO_P02, GPIO_FLOATING },
 		{GPIO_P03, GPIO_FLOATING },
@@ -427,6 +264,17 @@ static void hal_init(void) {
 	hal_adc_init();
 }
 
+const char* hex_ascii = { "0123456789ABCDEF" };
+uint8_t * str_bin2hex(uint8_t *d, uint8_t *s, int len) {
+	while(len--) {
+		*d++ = hex_ascii[(*s >> 4) & 0xf];
+		*d++ = hex_ascii[(*s++ >> 0) & 0xf];
+	}
+	return d;
+}
+
+uint8 devInfoSerialNumber[19] = { 0 };
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(void) {
 	g_system_clk = SYS_CLK_XTAL_16M; // SYS_CLK_XTAL_16M, SYS_CLK_DBL_32M, SYS_CLK_DLL_64M
@@ -484,7 +332,14 @@ int main(void) {
 	hal_rfphy_init();
 	hal_init();
 
-	//restore_utc_time_sec();
+
+	hal_gpio_write(GPIO_LED, LED_ON);
+	hal_gpioretention_register(GPIO_LED);//enable this pin retention
+
+//	restore_utc_time_sec();
+
+	batt_start_measure();
+
 #if 0 //def STACK_MAX_SRAM
         extern uint32 g_stack;
     __set_MSP((uint32_t)(&g_stack));
@@ -496,6 +351,14 @@ int main(void) {
 	LOG("sizeof(struct ll_pkt_desc) = %d, buf size = %d\n", sizeof(struct ll_pkt_desc), BLE_CONN_BUF_SIZE);
 	LOG("sizeof(g_pConnectionBuffer) = %d, sizeof(pConnContext) = %d, sizeof(largeHeap)=%d \n",
 		sizeof(g_pConnectionBuffer), sizeof(pConnContext),sizeof(g_largeHeap)); LOG("[REST CAUSE] %d\n ",g_system_reset_cause);
+
+
+	hal_get_flash_info();
+	uint8_t *p = str_bin2hex(devInfoSerialNumber, (uint8_t *)&phy_flash.IdentificationID, 3);
+	*p++ = '-';
+
+  LOG("%s: serialnum '%s'\n", __FUNCTION__, devInfoSerialNumber);
+
 	app_main(); // No Return from here
 
 	return 0;

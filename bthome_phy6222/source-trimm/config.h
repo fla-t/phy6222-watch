@@ -371,8 +371,8 @@
 #define LED_OFF		1
 
 #define ADC_PIN_USE_OUT		0	// нет подключения к +Vbat
-#define ADC_PIN				GPIO_P14
-#define ADC_VBAT_CHL		VBAT_ADC_P14
+#define ADC_PIN				GPIO_P11
+#define ADC_VBAT_CHL		VBAT_ADC_P11
 
 #define USE_TH_SENSOR	0
 #define USE_SECREEN		1

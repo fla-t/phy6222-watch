@@ -40,7 +40,7 @@
 //#include "thb2_peripheral.h"
 
 /* Application */
-//#include "thb2_main.h"
+#include "thb2_main.h"
 #include "halperipheral.h"
 
 /*********************************************************************

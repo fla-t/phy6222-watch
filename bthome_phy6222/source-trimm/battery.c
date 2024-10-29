@@ -83,7 +83,7 @@ void __attribute__((used)) hal_ADC_IRQHandler(void) {
 #else
 	bat_average.battery_mv = (adc_sum * 1904) >> 16;
 #endif
-	//adv_wrk.new_battery = 1; // new battery
+	adv_wrk.new_battery = 1; // new battery
 #if ((DEV_SERVICES & SERVICE_THS) == 0)
 	measured_data.count++;
 #endif

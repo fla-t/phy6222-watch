@@ -1,26 +1,36 @@
 ##############################################################################
 PROJECT_NAME ?= phy6222_watch
-#POJECT_DEF ?= -DDEVICE=DEVICE_THB2
+PROJECT_DEFS ?= -DDEVICE=DEVICE_WATCH_1
+BLE ?= 1
 ##############################################################################
-COM_PORT = COM230
+COM_PORT = COM5
+COM_SPEED = 250000
+UART_LOG_BPS = 115200
 ##############################################################################
 # Source
 SRC_PATH = ./source
 SRC_PRJ = main.c
+ifdef TRIMM
 SRC_PRJ += osal_peripheral.c
 SRC_PRJ += battery.c
 SRC_PRJ += peripheral_main.c
-
+SRC_PRJ += thb2_main.c
+else
+SRC_PRJ += battery.c
+SRC_PRJ += gpio_demo.c
+SRC_PRJ += gpio_Main.c
+SRC_PRJ += OSAL_gpio.c
+endif
 
 INCLUDES = -I$(SRC_PATH)
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRC_PRJ))
 ##############################################################################
 DEFINES += -D__GCC
-DEFINES += $(POJECT_DEF)
+DEFINES += $(PROJECT_DEFS)
 DEFINES += -DCFG_SLEEP_MODE=PWR_MODE_SLEEP
 #DEFINES += -DCFG_SLEEP_MODE=PWR_MODE_NO_SLEEP
-DEFINES += -DDEBUG_INFO=0
+DEFINES += -DDEBUG_INFO=3
 DEFINES += -DMTU_SIZE=240
 DEFINES += -DMAX_NUM_LL_CONN=1
 DEFINES += -DDEF_GAPBOND_MGR_ENABLE=0
@@ -121,13 +131,13 @@ LIBS       += -Wl,--start-group -lgcc -lnosys -Wl,--end-group
 INCLUDES += -I$(SDK_PATH)/misc
 INCLUDES += -I$(SDK_PATH)/misc/CMSIS/include
 INCLUDES += -I$(SDK_PATH)/components/arch/cm0
+INCLUDES += -I$(SDK_PATH)/components/inc
+INCLUDES += -I$(SDK_PATH)/components/osal/include
+INCLUDES += -I$(SDK_PATH)/components/common
 INCLUDES += -I$(SDK_PATH)/components/ble/controller
 INCLUDES += -I$(SDK_PATH)/components/ble/include
 INCLUDES += -I$(SDK_PATH)/components/ble/hci
 INCLUDES += -I$(SDK_PATH)/components/ble/host
-INCLUDES += -I$(SDK_PATH)/components/inc
-INCLUDES += -I$(SDK_PATH)/components/osal/include
-INCLUDES += -I$(SDK_PATH)/components/common
 INCLUDES += -I$(SDK_PATH)/components/profiles/ota_app
 INCLUDES += -I$(SDK_PATH)/components/profiles/DevInfo
 INCLUDES += -I$(SDK_PATH)/components/profiles/SimpleProfile
@@ -162,6 +172,7 @@ INCLUDES += -I$(SDK_PATH)/components/driver/watchdog
 SRCS += $(SDK_PATH)/lib/rf/patch.c
 SRCS += $(SDK_PATH)/lib/sec/phy_sec_ext.c
 SRCS += $(SDK_PATH)/lib/sec/aes.c
+ifdef BLE
 SRCS += $(SDK_PATH)/lib/ble_host/att_client.c
 SRCS += $(SDK_PATH)/lib/ble_host/att_server.c
 SRCS += $(SDK_PATH)/lib/ble_host/att_util.c
@@ -188,6 +199,7 @@ SRCS += $(SDK_PATH)/lib/ble_host/sm_pairing.c
 SRCS += $(SDK_PATH)/lib/ble_host/smp.c
 SRCS += $(SDK_PATH)/lib/ble_host/sm_rsppairing.c
 SRCS += $(SDK_PATH)/lib/ble_host/sm_task.c
+endif
 ifdef LIB_BLE_ADD
 SRCS += $(SDK_PATH)/lib/ble_controller/ll_common.c
 SRCS += $(SDK_PATH)/lib/ble_controller/ll_enc.c
@@ -281,14 +293,20 @@ all: directory $(SRC_O) $(OBJ_DIR)/$(PROJECT_NAME).elf $(OBJ_DIR)/$(PROJECT_NAME
 	@$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $(OBJ_DIR)/$@
 	@$(CC) -MM $(CFLAGS) $(INCFLAGS) $< -MT $@ -MF $(OBJ_DIR)/$(patsubst %.o,%.d,$@)
 
-flash:
-	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b 1000000 -r wh $(OBJ_DIR)/$(PROJECT_NAME).hex
+flash: $(OBJ_DIR)/$(PROJECT_NAME).hex
+	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b $(COM_SPEED) -r wh $(OBJ_DIR)/$(PROJECT_NAME).hex
+
+terminal:
+	@$(PYTHON) ./miniterm.py $(COM_PORT) $(UART_LOG_BPS) --rts 1 --rtstoggle 100 --exit-char 3 --rtsexit 1
 
 flash_ota:
-	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b 1000000 -r we 0x10000 $(BIN_OTA)
+	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b $(COM_SPEED) -r we 0x10000 $(BIN_OTA)
+
+identify:
+	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b $(COM_SPEED) i
 
 erase_and_flash:
-	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b 1000000 -e -r wh $(OBJ_DIR)/$(PROJECT_NAME).hex
+	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -b $(COM_SPEED) -e -r wh $(OBJ_DIR)/$(PROJECT_NAME).hex
 
 reset:
 	@$(PYTHON) ./rdwr_phy62x2.py -p$(COM_PORT) -r i
