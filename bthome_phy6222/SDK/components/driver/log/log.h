@@ -17,6 +17,7 @@ extern "C" {
 #endif
 
 #include "uart.h"
+#include "clock.h" // for hal_systick
 void dbg_printf(const char* format, ...);
 void dbg_printf_init(void);
 void my_dump_byte(uint8_t* pData, int dlen);
@@ -29,17 +30,17 @@ typedef void(*std_putc)(char* data, uint16_t size);
 #if(DEBUG_INFO == 1)
 #define AT_LOG(...)
 #define LOG_DEBUG(...)
-#define LOG(...)  dbg_printf(__VA_ARGS__)
+#define LOG(fmt, ...)  dbg_printf("[%ld] %s: " fmt "\n", hal_systick(), __FUNCTION__, ##__VA_ARGS__)
 #define LOG_INIT() dbg_printf_init()
 #define LOG_DUMP_BYTE(a,b) my_dump_byte(a,b)
 #elif(DEBUG_INFO == 2)
 #define AT_LOG(...)  dbg_printf(__VA_ARGS__)
 #define LOG_DEBUG(...)  
-#define LOG(...) dbg_printf(__VA_ARGS__)
+#define LOG(fmt, ...)  dbg_printf("[%ld] %s: " fmt "\n", hal_systick(), __FUNCTION__, ##__VA_ARGS__)
 #define LOG_INIT() dbg_printf_init()
 #define LOG_DUMP_BYTE(a,b) my_dump_byte(a,b)
 #elif(DEBUG_INFO == 3)
-#define LOG(...)  dbg_printf(__VA_ARGS__)
+#define LOG(fmt, ...)  dbg_printf("[%ld] %s: " fmt "\n", hal_systick(), __FUNCTION__, ##__VA_ARGS__)
 #define AT_LOG(...)  dbg_printf(__VA_ARGS__)
 #define LOG_DEBUG(...)  dbg_printf(__VA_ARGS__)
 #define LOG_INIT() dbg_printf_init()

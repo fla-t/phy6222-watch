@@ -1,19 +1,19 @@
 /**************************************************************************************************
- 
-  Phyplus Microelectronics Limited confidential and proprietary. 
+
+  Phyplus Microelectronics Limited confidential and proprietary.
   All rights reserved.
 
-  IMPORTANT: All rights of this software belong to Phyplus Microelectronics 
-  Limited ("Phyplus"). Your use of this Software is limited to those 
-  specific rights granted under  the terms of the business contract, the 
-  confidential agreement, the non-disclosure agreement and any other forms 
-  of agreements as a customer or a partner of Phyplus. You may not use this 
-  Software unless you agree to abide by the terms of these agreements. 
-  You acknowledge that the Software may not be modified, copied, 
-  distributed or disclosed unless embedded on a Phyplus Bluetooth Low Energy 
-  (BLE) integrated circuit, either as a product or is integrated into your 
-  products.  Other than for the aforementioned purposes, you may not use, 
-  reproduce, copy, prepare derivative works of, modify, distribute, perform, 
+  IMPORTANT: All rights of this software belong to Phyplus Microelectronics
+  Limited ("Phyplus"). Your use of this Software is limited to those
+  specific rights granted under  the terms of the business contract, the
+  confidential agreement, the non-disclosure agreement and any other forms
+  of agreements as a customer or a partner of Phyplus. You may not use this
+  Software unless you agree to abide by the terms of these agreements.
+  You acknowledge that the Software may not be modified, copied,
+  distributed or disclosed unless embedded on a Phyplus Bluetooth Low Energy
+  (BLE) integrated circuit, either as a product or is integrated into your
+  products.  Other than for the aforementioned purposes, you may not use,
+  reproduce, copy, prepare derivative works of, modify, distribute, perform,
   display or sell this Software and/or its documentation for any purposes.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
@@ -27,13 +27,13 @@
   OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
   OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
   (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-  
+
 **************************************************************************************************/
 
 /**************************************************************************************************
   Filename:       SimpleBLEPeripheral_Main.c
-  Revised:        
-  Revision:        
+  Revised:
+  Revision:
 
   Description:    This file contains the main and callback functions for
                   the Simple BLE Peripheral sample application.
@@ -53,13 +53,12 @@
 
 #include "ll_sleep.h"
 
-
 #include "uart.h"
 /**************************************************************************************************
  * FUNCTIONS
  **************************************************************************************************/
 #include "comdef.h"
-//#include "OnBoard.h"
+// #include "OnBoard.h"
 #include "OSAL.h"
 #include "OSAL_Tasks.h"
 #include "OSAL_Timers.h"
@@ -76,7 +75,6 @@ extern uint32 ll_remain_time;
  * EXTERNAL VARIABLES
  */
 
-
 /**************************************************************************************************
  * @fn          main
  *
@@ -88,30 +86,29 @@ extern uint32 ll_remain_time;
  **************************************************************************************************
  */
 #ifdef __GNUC__
-void app_main(void) __attribute__ ((naked));
+void app_main(void) __attribute__((naked));
 #endif
 void app_main(void)
 {
-    LOG("osal_init_system PRE\n");
+    LOG("osal_init_system PRE");
     /* Initialize the operating system */
     osal_init_system();
-    LOG("osal_init_system POST\n");
+    LOG("osal_init_system POST");
 
-    LOG("osal_pwrmgr_device PRE\n");
-    osal_pwrmgr_device( PWRMGR_BATTERY );
-    LOG("osal_pwrmgr_device POST\n");
+    LOG("osal_pwrmgr_device PRE");
+    osal_pwrmgr_device(PWRMGR_BATTERY);
+    LOG("osal_pwrmgr_device POST");
 
     /* Start OSAL */
-    LOG("osal_start_system PRE\n");
+    LOG("osal_start_system PRE");
     osal_start_system(); // No Return from here
-    LOG("osal_start_system POST\n");
-    return 0;
+    LOG("osal_start_system POST");
+    return;
 }
 
 /**************************************************************************************************
                                            CALL-BACKS
 **************************************************************************************************/
-
 
 /*************************************************************************************************
 **************************************************************************************************/
