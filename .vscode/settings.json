@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "trigger.h": "c",
+        "bus_dev.h": "c",
+        "config.h": "c",
+        "gpio.h": "c",
+        "global_config.h": "c",
+        "clock.h": "c",
+        "adc.h": "c",
+        "mcu_phy_bumbee.h": "c"
+    }
+}
